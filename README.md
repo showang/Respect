@@ -4,14 +4,26 @@
 # Respect
 A simple RESTful API framework depends on language spec, without invasive.  
   
-Request is based on OkHttp3, it's available to customize your own request executor.
+HTTP request based on OkHttp3, it's available to customize your own request executor.
+
+#### Modules
+* [Respect-Core](https://github.com/showang/Respect-Core)
+* [Respect-OkHttp](https://github.com/showang/Respect-OkHttp)
 
 # Example
    
-```val executor: RequestExecutor = OkHttpRequestExecutor(httpClient)```
+```kotlin
+val executor: RequestExecutor = OkHttpRequestExecutor(httpClient)
+```
 
 ## Get
-```
+```kotlin
+val getApi = GetUrlQuerApi().start(executor, { error ->
+	// Error handling.
+}) { result ->
+	// Process your result
+}
+
 class GetUrlQueryApi : BasicApi<String, GetUrlQueryApi>() {
     override fun parse(bytes: ByteArray): String {
         return String(bytes)
@@ -24,15 +36,15 @@ class GetUrlQueryApi : BasicApi<String, GetUrlQueryApi>() {
     override val urlQueries: Map<String, String>
         get() = mapOf("postId" to "1")              // ?postId=1              
 }
-
-val getApi = GetUrlQuerApi().start(executor, { error ->
+```
+## Post
+```kotlin
+val postApi = PostJsonApi("post id").start(executor, { error ->
 	// Error handling.
 }) { result ->
 	// Process your result
 }
-```
-## Post
-```
+
 class PostJsonApi(private val id: String) : BasicApi<String, PostJsonApi>() {
     override fun parse(bytes: ByteArray): String {
         return String(bytes)
@@ -47,12 +59,6 @@ class PostJsonApi(private val id: String) : BasicApi<String, PostJsonApi>() {
     override val body: ByteArray
         get() = "{\"id\"=\"$id\"}".toByteArray()
 }
-
-val postApi = PostJsonApi("post id").start(executor, { error ->
-	// Error handling.
-}) { result ->
-	// Process your result
-}
 ```
 ...etc
 
@@ -66,15 +72,17 @@ maven
 sbt
 leiningen
 Add it in your root build.gradle at the end of repositories:
-
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+```gradle
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
 	}
+}
+```
 ## Step 2. Add the dependency
-
-	dependencies {
-	        implementation 'com.github.showang:Respect:0.0.2'
-	}
+```gradle
+dependencies {
+        implementation 'com.github.showang:Respect:0.0.2'
+}
+```
