@@ -55,12 +55,12 @@ class RestFulApiTest {
 
     @Test
     fun testPost_success() {
-        MockPostApi().start(executor, {}) {
+        PostJsonApi("66666").start(executor, {}) {
             println(it)
         }
     }
 
-    class MockPostApi : BasicApi<String, MockPostApi>() {
+    class PostJsonApi(private val id: String) : BasicApi<String, PostJsonApi>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
@@ -72,7 +72,7 @@ class RestFulApiTest {
         override val contentType: String
             get() = ContentType.JSON
         override val body: ByteArray
-            get() = "{\"id\"=\"66666\"}".toByteArray()
+            get() = "{\"id\"=\"$id\"}".toByteArray()
     }
 
 }
