@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/showang/Respect.svg?branch=master)](https://travis-ci.org/showang/Respect)
 [![](https://jitpack.io/v/showang/Respect.svg)](https://jitpack.io/#showang/Respect)
 
 # Respect
