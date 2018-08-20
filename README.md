@@ -13,7 +13,7 @@ HTTP request based on OkHttp3, it's available to customize your own request exec
 # Example
    
 ```kotlin
-val executor: RequestExecutor = OkHttpRequestExecutor(httpClient)
+val executor: RequestExecutor = OkHttpRequestExecutor(okHttpClient)
 ```
 
 ## Get
@@ -24,9 +24,9 @@ val getApi = GetUrlQuerApi().start(executor, { error ->
 	// Process your result
 }
 
-class GetUrlQueryApi : BasicApi<String, GetUrlQueryApi>() {
-    override fun parse(bytes: ByteArray): String {
-        return String(bytes)
+class GetUrlQueryApi : RespectApi<ApiResult, GetUrlQueryApi>() {
+    override fun parse(bytes: ByteArray): ApiResult {
+        return ApiResult.parseToModels(bytes)	// Parse result to your model classes
     }
 
     override val url: String
@@ -45,9 +45,9 @@ val postApi = PostJsonApi("post id").start(executor, { error ->
 	// Process your result
 }
 
-class PostJsonApi(private val id: String) : BasicApi<String, PostJsonApi>() {
-    override fun parse(bytes: ByteArray): String {
-        return String(bytes)
+class PostJsonApi(private val id: String) : RespectApi<ApiResult, PostJsonApi>() {
+    override fun parse(bytes: ByteArray): ApiResult {
+        return ApiResult.parseToModels(bytes)	// Parse result to your model classes
     }
 
     override val url: String
@@ -83,6 +83,6 @@ allprojects {
 ## Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.showang:Respect:0.0.2'
+        implementation 'com.github.showang:Respect:0.1.1'
 }
 ```
