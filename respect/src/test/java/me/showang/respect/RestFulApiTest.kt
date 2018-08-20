@@ -1,6 +1,5 @@
 package me.showang.respect
 
-import me.showang.respect.base.BasicApi
 import me.showang.respect.core.ContentType
 import me.showang.respect.core.HttpMethod
 import me.showang.respect.core.RequestExecutor
@@ -13,12 +12,14 @@ class RestFulApiTest {
 
     @Test
     fun testGet_urlQuery() {
-        GetUrlQueryApi().start(executor, {}) {
+        GetUrlQueryApi().start(executor, { _: Error ->
+            assert(false)
+        }) {
             println(it)
         }
     }
 
-    class GetUrlQueryApi : BasicApi<String, GetUrlQueryApi>() {
+    class GetUrlQueryApi : RespectApi<String, GetUrlQueryApi>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
@@ -35,12 +36,14 @@ class RestFulApiTest {
 
     @Test
     fun testGet_urlPath() {
-        GetUrlPathApi("1").start(executor) {
+        GetUrlPathApi("1").start(executor, { _: Error ->
+            assert(false)
+        }) {
             println(it)
         }
     }
 
-    class GetUrlPathApi(private val postId: String) : BasicApi<String, GetUrlQueryApi>() {
+    class GetUrlPathApi(private val postId: String) : RespectApi<String, GetUrlQueryApi>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
@@ -55,12 +58,16 @@ class RestFulApiTest {
 
     @Test
     fun testPost_success() {
-        PostJsonApi("66666").start(executor, {}) {
+        val id = "66666"
+        PostJsonApi(id).start(executor, { _: Error ->
+            assert(false)
+        }) {
             println(it)
+            assert(it == id)
         }
     }
 
-    class PostJsonApi(private val id: String) : BasicApi<String, PostJsonApi>() {
+    class PostJsonApi(private val id: String) : RespectApi<String, PostJsonApi>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
@@ -72,7 +79,7 @@ class RestFulApiTest {
         override val contentType: String
             get() = ContentType.JSON
         override val body: ByteArray
-            get() = "{\"id\"=\"$id\"}".toByteArray()
+            get() = "{\"id\":\"$id\"}".toByteArray()
     }
 
 }
