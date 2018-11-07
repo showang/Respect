@@ -10,6 +10,15 @@ HTTP request based on OkHttp3, it's available to customize your own request exec
 * [Respect-Core](https://github.com/showang/Respect-Core)
 * [Respect-OkHttp](https://github.com/showang/Respect-OkHttp)
 
+# New Feature
+### \[ Ver 0.2.0 \] Support Kotlin Coroutine API. (Require Kotlin 1.3)
+```kotlin
+uiScope.launch {
+    val result = GetUrlQuerApi().suspend() //Run on the worker thread.
+    update(result)
+}
+```
+
 # Example
    
 ```kotlin
