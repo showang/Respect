@@ -14,7 +14,7 @@ HTTP request based on OkHttp3, it's available to customize your own request exec
 ### \[ Ver 0.2.0 \] Support Kotlin Coroutine API. (Require Kotlin 1.3)
 ```kotlin
 uiScope.launch {
-    val result = GetUrlQuerApi().suspend() //Run on the worker thread.
+    val result = GetUrlQuerApi().suspend() //Worker thread.
     update(result)
 }
 ```
