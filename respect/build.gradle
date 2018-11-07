@@ -12,9 +12,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 101
-        versionName "0.1.1"
-        buildToolsVersion "28.0.2"
+        versionCode 200
+        versionName "0.2.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -36,12 +35,10 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "org.jetbrains.anko:anko-commons:$anko_version"
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.github.showang:Respect-Core:0.1.0'
-    implementation 'com.github.showang:Respect-OkHttp:0.1.1'
+    api 'com.github.showang:Respect-Core:0.2.2'
+    api 'com.github.showang:Respect-OkHttp:0.2.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
