@@ -1,5 +1,6 @@
 package me.showang.respect
 
+import kotlinx.coroutines.runBlocking
 import me.showang.respect.core.ContentType
 import me.showang.respect.core.HttpMethod
 import me.showang.respect.core.RequestExecutor
@@ -8,18 +9,20 @@ import org.junit.Test
 
 class RestFulApiTest {
 
-    private val executor: RequestExecutor = OkhttpRequestExecutor(syncMode = true)
+    private val executor: RequestExecutor = OkhttpRequestExecutor()
 
     @Test
     fun testGet_urlQuery() {
-        GetUrlQueryApi().start(executor, { _: Error ->
-            assert(false)
-        }) {
-            println(it)
+        runBlocking {
+            GetUrlQueryApi().start(executor, this, failHandler = {
+                assert(false)
+            }) {
+                println(it)
+            }
         }
     }
 
-    class GetUrlQueryApi : RespectApi<String, GetUrlQueryApi>() {
+    class GetUrlQueryApi : RespectApi<String>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
@@ -36,14 +39,17 @@ class RestFulApiTest {
 
     @Test
     fun testGet_urlPath() {
-        GetUrlPathApi("1").start(executor, { _: Error ->
-            assert(false)
-        }) {
-            println(it)
+        runBlocking {
+            GetUrlPathApi("1").start(executor, this, {
+                assert(false)
+            }) {
+                println(it)
+            }
         }
+
     }
 
-    class GetUrlPathApi(private val postId: String) : RespectApi<String, GetUrlQueryApi>() {
+    class GetUrlPathApi(private val postId: String) : RespectApi<String>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
@@ -59,15 +65,17 @@ class RestFulApiTest {
     @Test
     fun testPost_success() {
         val id = "66666"
-        PostJsonApi(id).start(executor, { _: Error ->
-            assert(false)
-        }) {
-            println(it)
-            assert(it == id)
+        runBlocking {
+            PostJsonApi(id).start(executor, this, {
+                assert(false)
+            }) {
+                println(it)
+                assert(it.contains(id))
+            }
         }
     }
 
-    class PostJsonApi(private val id: String) : RespectApi<String, PostJsonApi>() {
+    class PostJsonApi(private val id: String) : RespectApi<String>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
