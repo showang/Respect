@@ -12,9 +12,8 @@ class Respect {
     }
 }
 
-suspend fun RespectApi<*>.suspend() {
-    suspend(Respect.requestExecutor ?: defaultExecutor)
-}
+suspend fun <Result> RespectApi<Result>.suspend(): Result =
+        suspend(Respect.requestExecutor ?: defaultExecutor)
 
 fun <Result> RespectApi<Result>.start(scope: CoroutineScope? = null,
                                       failHandler: (Error) -> Unit = {},
@@ -25,5 +24,4 @@ fun <Result> RespectApi<Result>.start(scope: CoroutineScope? = null,
     } ?: run {
         start(executor = executor, failHandler = failHandler, successHandler = successHandler)
     }
-
 }
