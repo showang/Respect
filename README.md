@@ -11,10 +11,18 @@ HTTP request based on OkHttp3, it's available to customize your own request exec
 * [Respect-OkHttp](https://github.com/showang/Respect-OkHttp)
 
 # New Feature
-### \[ Ver 0.2.0 \] Support Kotlin Coroutine API. (Require Kotlin 1.3)
+### \[ Ver 0.2.1 \] Support default request executor.
 ```kotlin
 uiScope.launch {
     val result = GetUrlQuerApi().suspend() //Worker thread.
+    update(result)
+}
+```
+
+### \[ Ver 0.2.0 \] Support Kotlin Coroutine API. (Require Kotlin 1.3)
+```kotlin
+uiScope.launch {
+    val result = GetUrlQuerApi().suspend(requestExecutor) //Worker thread.
     update(result)
 }
 ```
@@ -92,6 +100,6 @@ allprojects {
 ## Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.showang:Respect:0.1.1'
+        implementation 'com.github.showang:Respect:0.2.1'
 }
 ```
