@@ -3,18 +3,14 @@ package me.showang.respect
 import kotlinx.coroutines.runBlocking
 import me.showang.respect.core.ContentType
 import me.showang.respect.core.HttpMethod
-import me.showang.respect.core.RequestExecutor
-import me.showang.respect.okhttp.OkhttpRequestExecutor
 import org.junit.Test
 
 class RestFulApiTest {
 
-    private val executor: RequestExecutor = OkhttpRequestExecutor()
-
     @Test
     fun testGet_urlQuery() {
         runBlocking {
-            GetUrlQueryApi().start(executor, this, failHandler = {
+            GetUrlQueryApi().start(this, failHandler = {
                 assert(false)
             }) {
                 println(it)
@@ -40,7 +36,7 @@ class RestFulApiTest {
     @Test
     fun testGet_urlPath() {
         runBlocking {
-            GetUrlPathApi("1").start(executor, this, {
+            GetUrlPathApi("1").start(this, {
                 assert(false)
             }) {
                 println(it)
@@ -66,7 +62,7 @@ class RestFulApiTest {
     fun testPost_success() {
         val id = "66666"
         runBlocking {
-            PostJsonApi(id).start(executor, this, {
+            PostJsonApi(id).start(this, {
                 assert(false)
             }) {
                 println(it)
