@@ -16,8 +16,14 @@ suspend fun RespectApi<*>.suspend() {
     suspend(Respect.requestExecutor ?: defaultExecutor)
 }
 
-fun <Result> RespectApi<Result>.start(scope: CoroutineScope,
+fun <Result> RespectApi<Result>.start(scope: CoroutineScope? = null,
                                       failHandler: (Error) -> Unit = {},
                                       successHandler: (Result) -> Unit) {
-    start(Respect.requestExecutor ?: defaultExecutor, scope, failHandler, successHandler)
+    val executor = Respect.requestExecutor ?: defaultExecutor
+    scope?.let {
+        start(executor, it, failHandler, successHandler)
+    } ?: run {
+        start(executor = executor, failHandler = failHandler, successHandler = successHandler)
+    }
+
 }
