@@ -12,8 +12,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 200
-        versionName "0.2.0"
+        versionCode 202
+        versionName "0.2.2"
         buildToolsVersion "28.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -43,7 +43,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     api 'com.github.showang:Respect-Core:0.2.2'
-    api 'com.github.showang:Respect-OkHttp:0.2.1'
+    api 'com.github.showang:Respect-OkHttp:0.2.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
