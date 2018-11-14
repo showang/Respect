@@ -19,9 +19,7 @@ class RestFulApiTest {
     }
 
     class GetUrlQueryApi : RespectApi<String>() {
-        override fun parse(bytes: ByteArray): String {
-            return String(bytes)
-        }
+        override fun parse(bytes: ByteArray): String = String(bytes)
 
         override val url: String
             get() = "https://jsonplaceholder.typicode.com/comments"
@@ -68,13 +66,12 @@ class RestFulApiTest {
                 println(it)
                 assert(it.contains(id))
             }
+            println("wtf")
         }
     }
 
     class PostJsonApi(private val id: String) : RespectApi<String>() {
-        override fun parse(bytes: ByteArray): String {
-            return String(bytes)
-        }
+        override fun parse(bytes: ByteArray): String = String(bytes)
 
         override val url: String
             get() = "https://jsonplaceholder.typicode.com/posts"
