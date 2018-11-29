@@ -11,6 +11,7 @@ HTTP request based on OkHttp3, it's available to customize your own request exec
 * [Respect-OkHttp](https://github.com/showang/Respect-OkHttp)
 
 # New Feature
+### \[ Ver 0.2.4 \] Fix error handling issue.
 ### \[ Ver 0.2.1 \] Support default request executor.
 ```kotlin
 uiScope.launch {
@@ -100,6 +101,6 @@ allprojects {
 ## Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.showang:Respect:0.2.1'
+        implementation 'com.github.showang:Respect:0.2.4'
 }
 ```
