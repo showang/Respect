@@ -7,16 +7,13 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 28
 
-
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 200
-        versionName "0.2.0"
-        buildToolsVersion "28.0.3"
+        versionCode 206
+        versionName "0.2.6"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -40,14 +37,13 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api 'com.github.showang:Respect-Core:0.2.2'
-    api 'com.github.showang:Respect-OkHttp:0.2.1'
+    api 'com.github.showang:Respect-Core:0.2.3'
+    api 'com.github.showang:Respect-OkHttp:0.2.5'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.1-alpha01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1-alpha01'
 }
 repositories {
     mavenCentral()
