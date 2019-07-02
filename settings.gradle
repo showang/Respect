@@ -1,1 +1,4 @@
-include ':respect'
+include ':respect', ':core', ':okhttp'
+
+project(':core').projectDir = new File('../Respect-Core/respect-core')
+project(':okhttp').projectDir = new File('../Respect-OkHttp/respect-okhttp')

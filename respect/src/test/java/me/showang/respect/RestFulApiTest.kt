@@ -60,13 +60,13 @@ class RestFulApiTest {
 
     @Test
     fun testPost_success() {
-        val id = "66666"
+        val id = "101"
         runBlocking {
             PostJsonApi(id).start(this, {
                 assert(false)
             }) {
                 println(it)
-                assert(it.contains(id))
+                assert(it.contains(id)) {"didn't contains id: $id"}
             }
             println("wtf")
         }
