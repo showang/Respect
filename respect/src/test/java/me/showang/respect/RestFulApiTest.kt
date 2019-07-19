@@ -3,7 +3,8 @@ package me.showang.respect
 import kotlinx.coroutines.runBlocking
 import me.showang.respect.core.ContentType
 import me.showang.respect.core.HttpMethod
-import me.showang.respect.core.ParseError
+import me.showang.respect.core.error.ParseError
+import me.showang.respect.core.error.RequestError
 import org.junit.Test
 import java.lang.IllegalArgumentException
 
@@ -107,6 +108,31 @@ class RestFulApiTest {
                 assert(it is ParseError)
             }) {
                 assert(false)
+            }
+        }
+    }
+
+    class NotFoundErrorApi : RespectApi<String>() {
+        override val httpMethod: HttpMethod
+            get() = HttpMethod.GET
+        override val url: String
+            get() = "https://jsonplaceholder.typicode.com/po"
+        override val contentType: String
+            get() = ContentType.JSON
+
+        override fun parse(bytes: ByteArray): String {
+            throw IllegalArgumentException("Parse Error")
+        }
+    }
+
+    @Test
+    fun testError_404NotFound() {
+        runBlocking {
+            NotFoundErrorApi().start(this, {
+                assert(it is RequestError) { "testError_404NotFound must throw RequestError" }
+                print(it)
+            }) {
+                assert(false) { "testError_404NotFound should be failed" }
             }
         }
     }
