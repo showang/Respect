@@ -1,32 +1,39 @@
 package me.showang.respect
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.showang.respect.core.RequestExecutor
 import me.showang.respect.okhttp.OkhttpRequestExecutor
+import kotlin.coroutines.CoroutineContext
 
 private val defaultExecutor: RequestExecutor by lazy { OkhttpRequestExecutor() }
 
 class Respect {
     companion object {
-        var requestExecutor: RequestExecutor? = null
+        var specifiedExecutor: RequestExecutor? = null
     }
 }
 
-suspend fun <Result> RespectApi<Result>.suspend(): Result =
-        suspend(Respect.requestExecutor ?: defaultExecutor)
+suspend fun <Result> RestfulApi<Result>.request(): Result =
+    request(Respect.specifiedExecutor ?: defaultExecutor)
 
-fun <Result> RespectApi<Result>.start(scope: CoroutineScope?,
-                                      failHandler: (Throwable) -> Unit = {},
-                                      successHandler: (Result) -> Unit) {
-    val executor = Respect.requestExecutor ?: defaultExecutor
-    scope?.let {
-        start(executor, it, failHandler, successHandler)
-    } ?: run {
-        start(executor = executor, failHandler = failHandler, successHandler = successHandler)
+fun <Result> RestfulApi<Result>.start(
+    uiContext: CoroutineContext,
+    failHandler: (Throwable) -> Unit = {},
+    successHandler: (Result) -> Unit
+) = CoroutineScope(IO).launch {
+    try {
+        val result = request()
+        withContext(uiContext) { successHandler(result) }
+    } catch (e: Throwable) {
+        withContext(uiContext) { failHandler(e) }
     }
 }
 
-fun <Result> RespectApi<Result>.start(failHandler: (Throwable) -> Unit = {},
-                                      successHandler: (Result) -> Unit) {
-    start(null, failHandler, successHandler)
-}
+fun <Result> RestfulApi<Result>.start(
+    failHandler: (Throwable) -> Unit = {},
+    successHandler: (Result) -> Unit
+) = start(Main, failHandler, successHandler)

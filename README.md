@@ -4,13 +4,14 @@
 # Respect
 A simple RESTful API framework depends on language spec, without invasive.  
   
-HTTP request based on OkHttp3, it's available to customize your own request executor.
+HTTP request based on OkHttp3 by default, but you can build your own request executor if any requiring implementation changes.
 
 #### Modules
 * [Respect-Core](https://github.com/showang/Respect-Core)
 * [Respect-OkHttp](https://github.com/showang/Respect-OkHttp)
 
 # New Feature
+### \[ Ver 1.0.0 \] Officially Release. ( Refactoring and upgrading libraries version)
 ### \[ Ver 0.2.4 \] Fix error handling issue.
 ### \[ Ver 0.2.1 \] Support default request executor.
 ```kotlin
@@ -47,12 +48,9 @@ class GetUrlQueryApi : RespectApi<ApiResult, GetUrlQueryApi>() {
         return ApiResult.parseToModels(bytes)	// Parse result to your model classes
     }
 
-    override val url: String
-        get() = "https://jsonplaceholder.typicode.com/comments"
-    override val httpMethod: HttpMethod
-        get() = HttpMethod.GET
-    override val urlQueries: Map<String, String>
-        get() = mapOf("postId" to "1")              // ?postId=1              
+    override val url = "https://jsonplaceholder.typicode.com/comments"
+    override val httpMethod = HttpMethod.GET
+    override val urlQueries = mapOf("postId" to "1")              // ?postId=1
 }
 ```
 ## Post
@@ -68,12 +66,9 @@ class PostJsonApi(private val id: String) : RespectApi<ApiResult, PostJsonApi>()
         return ApiResult.parseToModels(bytes)	// Parse result to your model classes
     }
 
-    override val url: String
-        get() = "https://jsonplaceholder.typicode.com/posts"
-    override val httpMethod: HttpMethod
-        get() = HttpMethod.POST
-    override val contentType: String
-        get() = ContentType.JSON
+    override val url = "https://jsonplaceholder.typicode.com/posts"
+    override val httpMethod = HttpMethod.POST
+    override val contentType = ContentType.JSON
     override val body: ByteArray
         get() = "{\"id\"=\"$id\"}".toByteArray()
 }
@@ -101,6 +96,6 @@ allprojects {
 ## Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.showang:Respect:0.2.4'
+        implementation 'com.github.showang:Respect:{last_version}'
 }
 ```

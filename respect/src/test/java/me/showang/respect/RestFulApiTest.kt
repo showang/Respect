@@ -1,27 +1,27 @@
 package me.showang.respect
 
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.runBlocking
 import me.showang.respect.core.ContentType
 import me.showang.respect.core.HttpMethod
 import me.showang.respect.core.error.ParseError
 import me.showang.respect.core.error.RequestError
 import org.junit.Test
-import java.lang.IllegalArgumentException
 
 class RestFulApiTest {
 
     @Test
     fun testGet_urlQuery() {
         runBlocking {
-            GetUrlQueryApi().start(this, failHandler = {
+            GetUrlQueryApi().start(Default, failHandler = {
                 assert(false)
             }) {
                 println(it)
-            }
+            }.join()
         }
     }
 
-    class GetUrlQueryApi : RespectApi<String>() {
+    class GetUrlQueryApi : RestfulApi<String>() {
         override fun parse(bytes: ByteArray): String = String(bytes)
 
         override val url: String
@@ -37,16 +37,16 @@ class RestFulApiTest {
     @Test
     fun testGet_urlPath() {
         runBlocking {
-            GetUrlPathApi("1").start(this, {
+            GetUrlPathApi("1").start(Default, {
                 assert(false)
             }) {
                 println(it)
-            }
+            }.join()
         }
 
     }
 
-    class GetUrlPathApi(private val postId: String) : RespectApi<String>() {
+    class GetUrlPathApi(private val postId: String) : RestfulApi<String>() {
         override fun parse(bytes: ByteArray): String {
             return String(bytes)
         }
@@ -63,17 +63,17 @@ class RestFulApiTest {
     fun testPost_success() {
         val id = "101"
         runBlocking {
-            PostJsonApi(id).start(this, {
+            PostJsonApi(id).start(Default, {
                 assert(false)
             }) {
                 println(it)
-                assert(it.contains(id)) {"didn't contains id: $id"}
-            }
+                assert(it.contains(id)) { "didn't contains id: $id" }
+            }.join()
             println("wtf")
         }
     }
 
-    class PostJsonApi(private val id: String) : RespectApi<String>() {
+    class PostJsonApi(private val id: String) : RestfulApi<String>() {
         override fun parse(bytes: ByteArray): String = String(bytes)
 
         override val url: String
@@ -87,7 +87,7 @@ class RestFulApiTest {
     }
 
 
-    class ParseErrorApi : RespectApi<String>() {
+    class ParseErrorApi : RestfulApi<String>() {
         override val httpMethod: HttpMethod
             get() = HttpMethod.GET
         override val url: String
@@ -103,16 +103,16 @@ class RestFulApiTest {
     @Test
     fun testError_parseException() {
         runBlocking {
-            ParseErrorApi().start(this, {
+            ParseErrorApi().start(Default, {
                 println("on parse error: $it")
                 assert(it is ParseError)
             }) {
                 assert(false)
-            }
+            }.join()
         }
     }
 
-    class NotFoundErrorApi : RespectApi<String>() {
+    class NotFoundErrorApi : RestfulApi<String>() {
         override val httpMethod: HttpMethod
             get() = HttpMethod.GET
         override val url: String
@@ -128,12 +128,11 @@ class RestFulApiTest {
     @Test
     fun testError_404NotFound() {
         runBlocking {
-            NotFoundErrorApi().start(this, {
+            NotFoundErrorApi().start(Default, {
                 assert(it is RequestError) { "testError_404NotFound must throw RequestError" }
-                print(it)
             }) {
                 assert(false) { "testError_404NotFound should be failed" }
-            }
+            }.join()
         }
     }
 
