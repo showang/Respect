@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 30
-        versionCode 1000
-        versionName "1.0.0"
+        versionCode 1001
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -39,8 +39,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-    api 'com.github.showang:Respect-Core:1.0.0'
-    api 'com.github.showang:Respect-OkHttp:1.0.0'
+    api 'com.github.showang:Respect-Core:1.0.1'
+    api 'com.github.showang:Respect-OkHttp:1.0.1'
 
 //    api project(path: ':core')
 //    api project(path: ':okhttp')
